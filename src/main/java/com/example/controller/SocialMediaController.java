@@ -1,9 +1,12 @@
 package com.example.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
@@ -20,22 +23,27 @@ import com.example.service.AccountService;
 @RestController
 public class SocialMediaController {
 
-
     //Inject Service
-    private AccountService accountService;
+    AccountService accountService;
 
+    @Autowired
+    public SocialMediaController(AccountService service){
+        this.accountService = service;
+    }
 
     //Control user registration
     @PostMapping("/register")
-    public ResponseEntity<Account> addUser(Account account){
+    public ResponseEntity<String> addUser(@RequestBody Account account){
 
-       Account newAccount = accountService.addUser(account);   
-       if(newAccount != null){
-        return new ResponseEntity<>(newAccount, HttpStatus.OK);
+       Account newAccount = accountService.addUser(account); 
+        //return null;
+        if(newAccount != null){
+        return ResponseEntity.status(200).body("OK");
        }
        else{
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return ResponseEntity.status(409).body("CONFLICT");
        }
-    }
-
-}
+        
+      
+       
+}}

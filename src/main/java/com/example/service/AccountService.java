@@ -1,44 +1,42 @@
 package com.example.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 
+@Service
 public class AccountService {
 
     //Inject Repository
-    private AccountRepository accountRepository;
+    AccountRepository accountRepository;
 
+    @Autowired
+    public AccountService(AccountRepository repo){
+        this.accountRepository = repo;
+    }
+
+    //Add a new account
     public Account addUser(Account account) {
-
-        //Validate
-
+        
         if(validateInput(account)){
-            //Perform search for duplicates
-
-            if(accountRepository.findByUsername(account.getUsername()) == null){
-                Account newAccount = accountRepository.addUser();
-                return newAccount;
-            }
-            else{
-                return null;
-            }
-          
-
-        }
-
-        else{
-            return null;
+            return accountRepository.save(account);
         }
         
+        return null;
 
     }
 
 
     public boolean validateInput(Account account){
         if(account.getUsername().length() > 0 & account.getUsername() != " " & account.getPassword().length() > 4){
-
-            return true;
-            
+            if(accountRepository.findByUsername(account.getUsername()) == null){
+                return true;
+            }
+            else{
+                return false;
+            }          
         }
         else{
             return false;
