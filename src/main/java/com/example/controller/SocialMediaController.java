@@ -33,15 +33,15 @@ public class SocialMediaController {
 
     //Control user registration
     @PostMapping("/register")
-    public ResponseEntity<String> addUser(@RequestBody Account account){
+    public ResponseEntity<Account> addUser(@RequestBody Account account){
 
        Account newAccount = accountService.addUser(account); 
         //return null;
         if(newAccount != null){
-        return ResponseEntity.status(200).body("OK");
+        return ResponseEntity.ok(account);
        }
        else{
-        return ResponseEntity.status(409).body("CONFLICT");
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
        }
         
       
