@@ -74,4 +74,26 @@ public class SocialMediaController {
         ArrayList<Message> messages = messageService.getMessages();
         return ResponseEntity.ok(messages);
     }
+
+    /**
+     * - The creation of the message will be successful if and only if the message_text is not blank, 
+     * is under 255 characters, and posted_by refers to a real, existing user. 
+     * If successful, the response body should contain a JSON of the message, including its message_id. The response status should be 200, which is the default. The new message should be persisted to the database.
+-       If the creation of the message is not successful, the response status should be 400. (Client error)
+
+     */
+
+    //Post a new message
+    @PostMapping("/messages")
+    public ResponseEntity<Message> postMessage(@RequestBody Message message){
+
+        Message postedMessage = messageService.postMessage(message);
+        if(postedMessage != null){
+            return ResponseEntity.ok(postedMessage);
+        }
+        else{
+            return ResponseEntity.status(400).build();
+        }
+       
+    }
 }
