@@ -8,8 +8,6 @@ import com.example.entity.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer>{
 
-    //Account getByUsername(String username);
-
     Account findByUsername(String username);
 
 
