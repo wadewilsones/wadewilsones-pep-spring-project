@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +25,28 @@ public class AccountService {
         if(validateInput(account)){
             return accountRepository.save(account);
         }
-        
         return null;
 
+    }
+
+
+    public Account loginUser(Account account) {
+
+        Account existingAccount =  accountRepository.findByUsername(account.getUsername());
+
+       if(existingAccount != null){
+            if(existingAccount.getPassword().equals(account.getPassword())){
+                return existingAccount;
+            }
+            else{
+                return null;
+            }
+           
+        }
+        else{
+            return null;
+        }
+       
     }
 
 
@@ -42,4 +63,6 @@ public class AccountService {
             return false;
         }
     }
+
+
 }

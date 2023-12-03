@@ -31,6 +31,11 @@ public class SocialMediaController {
         this.accountService = service;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok("Hello World");
+    }
+
     //Control user registration
     @PostMapping("/register")
     public ResponseEntity<Account> addUser(@RequestBody Account account){
@@ -43,7 +48,21 @@ public class SocialMediaController {
        else{
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
        }
-        
+           
+    }
+
+    //User Login
+    @PostMapping("/login")
+    public ResponseEntity<Account> loginUser(@RequestBody Account account){
+
+        Account user = accountService.loginUser(account);
+                
+        if(user != null){
+            return ResponseEntity.ok(user);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
       
-       
-}}
+    }
+}
