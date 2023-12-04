@@ -41,6 +41,18 @@ public class MessageService {
         return null;
     }
 
+    public Message getMessageById(int id) {
+
+        Optional<Message> message = messageRepository.findById(id);
+        if(message.isPresent()){
+            return message.get();
+        }
+        else{
+            return null;
+        }
+       
+    }
+
 
 
     public boolean validateInput(Message message){
@@ -55,4 +67,6 @@ public class MessageService {
 
         return false;
     }
+
+
 }
