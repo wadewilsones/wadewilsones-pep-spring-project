@@ -66,6 +66,24 @@ public class MessageService {
        
     }
 
+    public String updateMessage(int message_id, String message) {
+
+        Optional<Message> existingMessage = messageRepository.findById(message_id);
+         if(existingMessage.isPresent()){
+            Message updatedMessage = existingMessage.get();
+            updatedMessage.setMessage_text(message);
+            messageRepository.save(updatedMessage);
+            return "1";
+        }
+        else{
+            return null;
+        }
+        
+       
+    }
+
+
+
 
 
     public boolean validateInput(Message message){

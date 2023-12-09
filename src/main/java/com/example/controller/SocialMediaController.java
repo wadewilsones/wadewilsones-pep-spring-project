@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -101,17 +103,31 @@ public class SocialMediaController {
         return ResponseEntity.ok(requestedMessage);
     }
 
-
-    /**
-     * As a User, I should be able to submit a DELETE request on the endpoint DELETE localhost:8080/messages/{message_id}.
-
-- The deletion of an existing message should remove an existing message from the database. If the message existed, the response body should contain the number of rows updated (1). The response status should be 200, which is the default.
-- If the message did not exist, the response status should be 200, but the response body should be empty. This is because the DELETE verb is intended to be idempotent, ie, multiple calls to the DELETE endpoint should respond with the same type of response.
-
-     */
 @DeleteMapping("/messages/{message_id}")
 public ResponseEntity<String> deleteMessage(@PathVariable int message_id){
    String response =  messageService.deleteMessage(message_id);
    return ResponseEntity.ok(response);
 }
+/**
+ * As a user, I should be able to submit a PATCH request on the endpoint PATCH localhost:8080/messages/{message_id}. 
+ * The request body should contain a new message_text values to replace the message identified by message_id. 
+ * The request body can not be guaranteed to contain any other information.
+- The update of a message should be successful if and only if the message id already exists and the new message_text is not blank and is not over 255 characters. 
+If the update is successful, the response body should contain the number of rows updated (1), 
+and the response status should be 200, which is the default. The message existing on the database should have the updated message_text.
+- If the update of the message is not successful for any reason, the response status should be 400. (Client error)
+ * 
+ * 
+ */
+
+ @PatchMapping("/messages/{message_id}")
+ public ResponseEntity<String> updateMessage(@RequestBody String message_text, @PathVariable int message_id){
+    String updatedMessage = messageService.updateMessage(message_id, message_text);
+    if(updatedMessage != null){
+        return ResponseEntity.ok(updatedMessage);
+    }
+    else{
+        return ResponseEntity.status(400).build();
+    }
+ }
 }
