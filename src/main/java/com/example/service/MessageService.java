@@ -53,6 +53,19 @@ public class MessageService {
        
     }
 
+    public String deleteMessage(int message_id) {
+
+        if(messageRepository.findById(message_id).isPresent()){
+            messageRepository.deleteById(message_id);
+            return "1";
+        
+        }
+        else{
+            return null;
+        }
+       
+    }
+
 
 
     public boolean validateInput(Message message){
@@ -67,6 +80,8 @@ public class MessageService {
 
         return false;
     }
+
+
 
 
 }
