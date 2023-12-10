@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,23 +104,35 @@ public class SocialMediaController {
         return ResponseEntity.ok(requestedMessage);
     }
 
-@DeleteMapping("/messages/{message_id}")
-public ResponseEntity<String> deleteMessage(@PathVariable int message_id){
-   String response =  messageService.deleteMessage(message_id);
-   return ResponseEntity.ok(response);
-}
+    @GetMapping("/accounts/{account_id}/messages")
+    public ResponseEntity <ArrayList<Message>> getMessagesByUser(@PathVariable int account_id){
+        ArrayList<Message> messages = messageService.getMessagesByPostedBy(account_id);
+        return ResponseEntity.ok(messages);
+    }
 
- @PatchMapping("/messages/{message_id}")
+    @DeleteMapping("/messages/{message_id}")
+    public ResponseEntity<String> deleteMessage(@PathVariable int message_id){
+    String response =  messageService.deleteMessage(message_id);
+    return ResponseEntity.ok(response);
+    }
+
+/*
+ * 
+ *  @PatchMapping("/messages/{message_id}")
  public ResponseEntity <String> updateMessage(@RequestBody String message_text, @PathVariable int message_id){
     String updatedMessage = messageService.updateMessage(message_id, message_text);
      if(updatedMessage == null){
         return ResponseEntity.status(400).build();
     }
-    else{
+    else if(updatedMessage != null){
        return ResponseEntity.ok(updatedMessage);
     }
    
  }
+ * 
+ */
+
+
 
  
 }

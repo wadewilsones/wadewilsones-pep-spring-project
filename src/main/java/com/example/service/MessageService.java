@@ -85,12 +85,22 @@ public class MessageService {
             }
 
           
-    }       
+    }   
+    
+    public ArrayList<Message> getMessagesByPostedBy(int account_id) {
         
- 
+        List<Message> messages = messageRepository.findAll();
+        ArrayList<Message> filteredMessages = new ArrayList<Message>();
 
+        for(int i = 0; i < messages.size(); i++){
+            if(messages.get(i).getPosted_by() == account_id){
+                filteredMessages.add(messages.get(i));
+            }
+        }
 
-
+        return filteredMessages;
+        
+    }
 
 
     public boolean validateInput(Message message){
@@ -105,6 +115,7 @@ public class MessageService {
 
         return false;
     }
+
 
 
 
