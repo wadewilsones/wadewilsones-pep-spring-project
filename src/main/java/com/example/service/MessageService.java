@@ -69,22 +69,16 @@ public class MessageService {
 
     public String updateMessage(int message_id, String message) {
 
-            if(message !="" || message.length() > 255){
+            if(message.length() < 255 & !message.trim().isEmpty()){
+                Optional<Message> existingMessage = messageRepository.findById(message_id);
+                if(existingMessage.isPresent()){
+                    Message updatedMessage = existingMessage.get();
+                    updatedMessage.setMessage_text(message);
+                    messageRepository.save(updatedMessage);
+                    return "1";
+                }
+            }
                 return null;
-            }
-
-            Optional<Message> existingMessage = messageRepository.findById(message_id);
-            if(existingMessage.isPresent()){
-                Message updatedMessage = existingMessage.get();
-                updatedMessage.setMessage_text(message);
-                messageRepository.save(updatedMessage);
-                return "1";
-            }
-            else{
-                return null;
-            }
-
-          
     }   
     
     public ArrayList<Message> getMessagesByPostedBy(int account_id) {

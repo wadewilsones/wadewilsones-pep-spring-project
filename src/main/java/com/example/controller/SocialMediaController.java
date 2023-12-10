@@ -116,23 +116,41 @@ public class SocialMediaController {
     return ResponseEntity.ok(response);
     }
 
-/*
- * 
- *  @PatchMapping("/messages/{message_id}")
- public ResponseEntity <String> updateMessage(@RequestBody String message_text, @PathVariable int message_id){
-    String updatedMessage = messageService.updateMessage(message_id, message_text);
-     if(updatedMessage == null){
-        return ResponseEntity.status(400).build();
+    @PatchMapping("/messages/{message_id}")
+    public ResponseEntity <String> updateMessage(@RequestBody Message message_text, @PathVariable int message_id){
+
+        String message = message_text.getMessage_text();
+        String updatedMessage = messageService.updateMessage(message_id, message);
+        if(updatedMessage != null){
+            return ResponseEntity.ok(updatedMessage);
+        }
+        else{
+            return ResponseEntity.status(400).build();
+        }
+        
+    
     }
-    else if(updatedMessage != null){
-       return ResponseEntity.ok(updatedMessage);
-    }
-   
- }
- * 
- */
-
-
-
  
+
+    /**
+     *     @PatchMapping("/messages/{message_id}")
+    public ResponseEntity <String> updateMessage(@RequestBody String message_text, @PathVariable int message_id){
+        String updatedMessage = messageService.updateMessage(message_id, message_text);
+        if(updatedMessage != null){
+            return ResponseEntity.ok(updatedMessage);
+        }
+        else{
+            return ResponseEntity.status(400).build();
+        }
+     
+       
+    
+    }
+ 
+     * 
+     * 
+
+     */
+
+
 }
