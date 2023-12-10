@@ -108,26 +108,18 @@ public ResponseEntity<String> deleteMessage(@PathVariable int message_id){
    String response =  messageService.deleteMessage(message_id);
    return ResponseEntity.ok(response);
 }
-/**
- * As a user, I should be able to submit a PATCH request on the endpoint PATCH localhost:8080/messages/{message_id}. 
- * The request body should contain a new message_text values to replace the message identified by message_id. 
- * The request body can not be guaranteed to contain any other information.
-- The update of a message should be successful if and only if the message id already exists and the new message_text is not blank and is not over 255 characters. 
-If the update is successful, the response body should contain the number of rows updated (1), 
-and the response status should be 200, which is the default. The message existing on the database should have the updated message_text.
-- If the update of the message is not successful for any reason, the response status should be 400. (Client error)
- * 
- * 
- */
 
  @PatchMapping("/messages/{message_id}")
- public ResponseEntity<String> updateMessage(@RequestBody String message_text, @PathVariable int message_id){
+ public ResponseEntity <String> updateMessage(@RequestBody String message_text, @PathVariable int message_id){
     String updatedMessage = messageService.updateMessage(message_id, message_text);
-    if(updatedMessage != null){
-        return ResponseEntity.ok(updatedMessage);
-    }
-    else{
+     if(updatedMessage == null){
         return ResponseEntity.status(400).build();
     }
+    else{
+       return ResponseEntity.ok(updatedMessage);
+    }
+   
  }
+
+ 
 }

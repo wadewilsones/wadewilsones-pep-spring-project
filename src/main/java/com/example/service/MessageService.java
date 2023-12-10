@@ -47,6 +47,7 @@ public class MessageService {
         if(message.isPresent()){
             return message.get();
         }
+        
         else{
             return null;
         }
@@ -68,19 +69,25 @@ public class MessageService {
 
     public String updateMessage(int message_id, String message) {
 
-        Optional<Message> existingMessage = messageRepository.findById(message_id);
-         if(existingMessage.isPresent()){
-            Message updatedMessage = existingMessage.get();
-            updatedMessage.setMessage_text(message);
-            messageRepository.save(updatedMessage);
-            return "1";
-        }
-        else{
-            return null;
-        }
+            if(message !="" || message.length() > 255){
+                return null;
+            }
+
+            Optional<Message> existingMessage = messageRepository.findById(message_id);
+            if(existingMessage.isPresent()){
+                Message updatedMessage = existingMessage.get();
+                updatedMessage.setMessage_text(message);
+                messageRepository.save(updatedMessage);
+                return "1";
+            }
+            else{
+                return null;
+            }
+
+          
+    }       
         
-       
-    }
+ 
 
 
 
@@ -88,7 +95,7 @@ public class MessageService {
 
     public boolean validateInput(Message message){
 
-        if (message.getMessage_text().length() < 255 & message.getMessage_text() != ""){
+        if (message.getMessage_text().length() < 255 && !message.getMessage_text().trim().isEmpty()){
             
             Optional <Account> user = accountRepo.findById(message.getPosted_by());
             if(user.isPresent()){
