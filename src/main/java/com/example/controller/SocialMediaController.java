@@ -43,19 +43,32 @@ public class SocialMediaController {
 
     }
 
+    /**
+     * JSON Account, but will not contain an account_id.
+
+- The registration will be successful if and only if the username is not blank, the password is at least 4 characters long, and an Account with that username does not already exist. 
+If all these conditions are met, the response body should contain a JSON of the Account, including its account_id. 
+The response status should be 200 OK, which is the default. The new account should be persisted to the database.
+- If the registration is not successful due to a duplicate username, the response status should be 409. (Conflict)
+- If the registration is not successful for some other reason, the response status should be 400. (Client error)
+     * @param account
+     * @return
+     */
+
     //User registration
     @PostMapping("/register")
     public ResponseEntity<Account> addUser(@RequestBody Account account){
 
-       Account newAccount = accountService.addUser(account); 
+       String newAccount = accountService.addUser(account); 
         //return null;
-        if(newAccount != null){
+        if(newAccount == "200"){
         return ResponseEntity.ok(account);
        }
-       else{
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+       else if(newAccount == "409"){
+        return ResponseEntity.status(409).build();
        }
-           
+        return ResponseEntity.status(400).build();
+
     }
 
     //User Login

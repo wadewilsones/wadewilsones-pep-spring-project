@@ -20,13 +20,21 @@ public class AccountService {
     }
 
     //Add a new account
-    public Account addUser(Account account) {
-        
-        if(validateInput(account)){
-            return accountRepository.save(account);
-        }
-        return null;
+    public String addUser(Account account) {
 
+        if(accountRepository.findByUsername(account.getUsername()) != null){
+            return "409";
+        }
+        else{
+            if(validateInput(account)){
+                accountRepository.save(account);
+                return "200";
+            }
+            else{
+                return "400";
+            }
+        }
+        
     }
 
 
